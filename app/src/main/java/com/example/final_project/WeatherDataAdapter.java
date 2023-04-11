@@ -1,6 +1,7 @@
 package com.example.final_project;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,7 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
         if (holder.weatherConditionTextView != null) {
             holder.weatherConditionTextView.setText(weatherData.getWeatherCondition());
         }
+
 
         String iconUrl = weatherData.getWeatherIconUrl();
         if (iconUrl != null && !iconUrl.isEmpty()) {

@@ -94,6 +94,7 @@
       android:textSize="18sp"
       app:layout_constraintBottom_toTopOf="@+id/weatherIconImageView"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/weather_condition_text_view" />
 
@@ -107,8 +108,8 @@
 
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/my_recyclerview"
-      android:layout_width="415dp"
-      android:layout_height="537dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintLeft_toLeftOf="parent"

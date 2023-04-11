@@ -18,7 +18,7 @@
         android:id="@+id/cityTextView"
         android:layout_width="135dp"
         android:layout_height="40dp"
-        android:text="@string/Database"
+        android:text="city name"
         android:textSize="20sp" />
 
     <TextView

@@ -45,6 +45,7 @@ public class WeatherDetailsFragment extends Fragment {
         // View view = inflater.inflate(R.layout.item_city_weather, container, false); // Replace with your fragment layout
 
         FragmentLayoutBinding binding= FragmentLayoutBinding.inflate(inflater);
+        View view = binding.getRoot();
         // Get references to UI elements
 //        weatherIconImageView = view.findViewById(R.id.weatherIconImageView);
 //        cityTextView = view.findViewById(R.id.cityTextView);
@@ -53,7 +54,7 @@ public class WeatherDetailsFragment extends Fragment {
         binding.cityTextView.setText(selected.getCityName());
         binding.temperatureTextView.setText(String.format(Locale.getDefault(), "%.1f °C", selected.getTemperature()));
         binding.weatherConditionTextView.setText(selected.getWeatherCondition());
-        return binding.getRoot();
+        return view;
 
         //binding.weatherIconImageView.setImageIcon(selected.getWeatherIconUrl());
 
