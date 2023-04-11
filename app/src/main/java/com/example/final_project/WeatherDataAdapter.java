@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -28,10 +29,10 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
     }
     private List<WeatherData> weatherDataList = new ArrayList<>();
     private AdapterView.OnItemClickListener itemClickListener; // Declare itemClickListener
-    @NonNull
+  @NonNull
     @Override
     public WeatherDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_weather, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city_weather, parent, false);
         WeatherDataViewHolder viewHolder = new WeatherDataViewHolder(itemView);
         viewHolder.setItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -46,9 +47,18 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
     @Override
     public void onBindViewHolder(@NonNull WeatherDataViewHolder holder, int position) {
         WeatherData weatherData = weatherDataList.get(position);
-        holder.cityTextView.setText(weatherData.getCityName());
-        holder.temperatureTextView.setText(String.format(Locale.getDefault(), "%.1f °C", weatherData.getTemperature()));
-        holder.weatherConditionTextView.setText(weatherData.getWeatherCondition());
+        if (holder.cityTextView != null) {
+            holder.cityTextView.setText(weatherData.getCityName());
+        }
+
+        if (holder.temperatureTextView != null) {
+            holder.temperatureTextView.setText(String.format(Locale.getDefault(), "%.1f °C", weatherData.getTemperature()));
+        }
+
+        if (holder.weatherConditionTextView != null) {
+            holder.weatherConditionTextView.setText(weatherData.getWeatherCondition());
+        }
+
         String iconUrl = weatherData.getWeatherIconUrl();
         if (iconUrl != null && !iconUrl.isEmpty()) {
             Glide.with(holder.itemView.getContext())

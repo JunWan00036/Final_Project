@@ -1,13 +1,17 @@
 package com.example.final_project;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -101,12 +105,19 @@ public class WeatherActivity extends AppCompatActivity implements WeatherDataLis
 
             }
         });
-     /*   WeatherDataAdapter adapter = new WeatherDataAdapter();
-//        weatherRecyclerView.setAdapter(new WeatherDataAdapter());
-        weatherRecyclerView.setAdapter(adapter);*/
+        weatherRecyclerView.setAdapter(new WeatherDataAdapter());
+        weatherRecyclerView.setAdapter(adapter);
 
 
 
+
+
+    }
+    @NonNull
+
+    public WeatherDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city_weather, parent, false);
+        return new WeatherDataViewHolder(itemView);
     }
 
 

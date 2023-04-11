@@ -107,8 +107,8 @@
 
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/my_recyclerview"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_width="415dp"
+      android:layout_height="537dp"
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintLeft_toLeftOf="parent"

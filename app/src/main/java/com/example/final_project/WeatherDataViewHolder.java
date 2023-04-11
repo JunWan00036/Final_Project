@@ -83,54 +83,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-public class WeatherDataViewHolder extends RecyclerView.ViewHolder  {
-    public TextView cityTextView;
-    public TextView temperatureTextView;
-    public TextView weatherConditionTextView;
-    public ImageView weatherIconImageView;
-    WeatherViewModel weatherViewModel;
-    List<WeatherData> weatherDataList = new ArrayList<>();
-    // Set click listener for RecyclerView items
 
-    private static final long DOUBLE_CLICK_TIME_DELTA = 300; // Define double-click time interval
-    private long lastClickTime = 0; // Track last click time
-    private AdapterView.OnItemClickListener clickListener; // Add this line
-
-    public WeatherDataViewHolder(@NonNull View itemView) {
-        super(itemView);
-        this.clickListener = clickListener;
-        this.weatherViewModel = new ViewModelProvider((ViewModelStoreOwner) itemView.getContext()).get(WeatherViewModel.class);
-        // Set click listener on itemView
-        itemView.setOnClickListener(this);
-        cityTextView = itemView.findViewById(R.id.cityTextView);
-        temperatureTextView = itemView.findViewById(R.id.weatherTextView);
-        weatherConditionTextView = itemView.findViewById(R.id.weatherConditionTextView);
-        weatherIconImageView = itemView.findViewById(R.id.weatherIconImageView);
-    }
-
-
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // Get clicked item position
-        position = getAbsoluteAdapterPosition();
-
-        // Check if double-clicked
-        if (SystemClock.elapsedRealtime() - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-            if (position != RecyclerView.NO_POSITION && clickListener != null) {
-//                clickListener.onItemClick(weatherDataList.get());
-                WeatherData selected = weatherDataList.get(position);
-
-                clickListener.onItemClick(parent, view, position, id);
-                weatherViewModel.selectedWeatherData.postValue(selected);
-            }
-        }
-        lastClickTime = SystemClock.elapsedRealtime();
-    }
-}
-*/
 public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public TextView cityTextView;
     public TextView temperatureTextView;
@@ -162,10 +120,7 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
                 }
             }
         });
-        // this.clickListener = clickListener;
 
-        //this.weatherViewModel = new ViewModelProvider((ViewModelStoreOwner) itemView.getContext()).get(WeatherViewModel.class);
-        // Set click listener on itemView
         itemView.setOnClickListener(this);
         cityTextView = itemView.findViewById(R.id.city_text_view);
         temperatureTextView = itemView.findViewById(R.id.temperature_text_view);
@@ -190,11 +145,41 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
         lastClickTime = SystemClock.elapsedRealtime();
     }
 
-    void bind(WeatherData weatherData) {
+   /* void bind(WeatherData weatherData) {
         // Bind data to the views in the ViewHolder
         cityTextView.setText(weatherData.getCityName());
         temperatureTextView.setText(Double.toString(weatherData.getTemperature()));
+        String iconUrl = weatherData.getWeatherIconUrl();
+        if (iconUrl != null && !iconUrl.isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(iconUrl)
+                    .into(holder.weatherIconImageView);
+        }
+    }*/
+
+
+    void bind(WeatherData weatherData) {
+        // Bind data to the views in the ViewHolder
+        if (cityTextView != null) {
+            cityTextView.setText(weatherData.getCityName());
+        }
+
+        if (temperatureTextView != null) {
+            temperatureTextView.setText(Double.toString(weatherData.getTemperature()));
+        }
+
+        String iconUrl = weatherData.getWeatherIconUrl();
+        if (iconUrl != null && !iconUrl.isEmpty() && weatherIconImageView != null) {
+            Glide.with(weatherIconImageView.getContext())
+                    .load(iconUrl)
+                    .into(weatherIconImageView);
+        }
     }
+
+
+
+
+
 
     /*    @Override
         public WeatherDataViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
@@ -208,7 +193,7 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
             });
             return viewHolder;
         }*/
-
+    @NonNull
     public WeatherDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city_weather, parent, false);
         return new WeatherDataViewHolder(itemView);
