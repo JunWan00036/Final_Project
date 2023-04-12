@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +16,6 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,7 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
 
     public void setItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+
     }
 //    private List<WeatherData> weatherDataList = new ArrayList<>();
 
@@ -99,6 +99,20 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
             }
         });
 */
+        // Define click listener outside of the onClickListener
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (itemClickListener != null) {
+                    // Call onItemClick() method of itemClickListener
+                    itemClickListener.onItemClick(null, view, holder.getAdapterPosition(), holder.getItemId());
+                }
+            }
+        };
+
+// Set click listener for holder.itemView
+        holder.itemView.setOnClickListener(onClickListener);
+
 
     }
 

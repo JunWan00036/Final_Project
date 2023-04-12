@@ -12,7 +12,7 @@ public abstract class WeatherDataDatabase extends RoomDatabase {
     public abstract WeatherDataDao weatherDataDao();
 
     // Singleton pattern to ensure only one instance of the database is created
-    private static volatile WeatherDataDatabase INSTANCE;
+    /*private static volatile WeatherDataDatabase INSTANCE;
     public static synchronized WeatherDataDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
@@ -20,5 +20,5 @@ public abstract class WeatherDataDatabase extends RoomDatabase {
                     .build();
         }
         return INSTANCE;
-    }
+    }*/
 }

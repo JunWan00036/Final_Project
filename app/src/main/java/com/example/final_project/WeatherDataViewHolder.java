@@ -95,7 +95,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class WeatherDataViewHolder extends RecyclerView.ViewHolder {
     public TextView cityTextView;
     public TextView temperatureTextView;
     public TextView weatherConditionTextView;
@@ -121,17 +121,22 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                int position = getAbsoluteAdapterPosition();
+                WeatherData selected = weatherDatalist.get(position);
+                weatherViewModel.selectedWeatherData.postValue(selected);
+                WeatherData selectedWeatherData = weatherDatalist.get(position);
                 // Handle item click event here
-                if (itemClickListener != null) {
-                    int position = getAbsoluteAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        itemClickListener.onItemClick(null, itemView, position, getItemId());
-                    }
-                }
+//                if (itemClickListener != null) {
+//                    int position = getAbsoluteAdapterPosition();
+//                    if (position != RecyclerView.NO_POSITION) {
+//                        itemClickListener.onItemClick(null, itemView, position, getItemId());
+//                    }
+//                }
             }
         });
 
-        itemView.setOnClickListener(this);
+//        itemView.setOnClickListener(this);
         cityTextView = itemView.findViewById(R.id.cityTextView);
         temperatureTextView = itemView.findViewById(R.id.temperatureview);
         weatherConditionTextView = itemView.findViewById(R.id.weatherTextView);
@@ -145,59 +150,62 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
 
 
 
-    @Override
-    public void onClick(View v) {
-        // Get clicked item position
-        int position = getAbsoluteAdapterPosition();
-        //weatherDatalist.add(weatherData);
-       /* if (weatherDatalist != null && weatherDatalist.size() > 0) {
-//            WeatherData weatherData = weatherDatalist.get(position); // Get the WeatherData object at the specified index
-            WeatherData selected = weatherDatalist.get(position);
-            weatherViewModel.selectedWeatherData.postValue(selected);
-        }*/
-        if (weatherDatalist != null && !weatherDatalist.isEmpty() && position >= 0 && position < weatherDatalist.size()) {
-            WeatherData selected = weatherDatalist.get(position);
-            weatherViewModel.selectedWeatherData.postValue(selected);
-            WeatherData selectedWeatherData = weatherDatalist.get(position);
-            WeatherDetailsFragment weatherDetailsFragment = new WeatherDetailsFragment(selectedWeatherData);
-            // Replace the current fragment with WeatherDetailsFragment
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.detail_fragment, weatherDetailsFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
-
-   /*     FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        WeatherDetailsFragment  itemFragment = WeatherData.newInstance(position); // You can pass any data to the fragment using newInstance() method
-        fragmentTransaction.replace(R.id.fragment, itemFragment);
-        fragmentTransaction.addToBackStack(null); // Optional: add to back stack to enable back navigation
-        fragmentTransaction.commit();*/
-
-
-        /*WeatherDetailsFragment newFragment = new WeatherDetailsFragment();
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        transaction.addToBackStack(null);
-        transaction.commit();
-        transaction.replace(R.id.detail_fragment, newFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();*/
-
-
-
-        // Check if double-clicked
-     /*   if (SystemClock.elapsedRealtime() - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-            if (position != RecyclerView.NO_POSITION && clickListener != null) {
-                WeatherData selected = weatherDataList.get(position);
-                itemClickListener.onItemClick(null, itemView, position, getItemId());
-                clickListener.onItemClick(null, v, position, 0); // Pass null for parent and 0 for id
-                weatherViewModel.selectedMessage.postValue(String.valueOf(selected));
-            }
-        }
-        lastClickTime = SystemClock.elapsedRealtime();*/
-    }
+//    @Override
+//    public void onClick(View v) {
+//        // Get clicked item position
+////        int position = getAbsoluteAdapterPosition();
+////        WeatherData selected = weatherDatalist.get(position);
+////           weatherViewModel.selectedWeatherData.postValue(selected);
+////           WeatherData selectedWeatherData = weatherDatalist.get(position);
+//        //weatherDatalist.add(weatherData);
+//       /* if (weatherDatalist != null && weatherDatalist.size() > 0) {
+////            WeatherData weatherData = weatherDatalist.get(position); // Get the WeatherData object at the specified index
+//            WeatherData selected = weatherDatalist.get(position);
+//            weatherViewModel.selectedWeatherData.postValue(selected);
+//        }*/
+////        if (weatherDatalist != null && !weatherDatalist.isEmpty() && position >= 0 && position < weatherDatalist.size()) {
+////            WeatherData selected = weatherDatalist.get(position);
+////            weatherViewModel.selectedWeatherData.postValue(selected);
+////            WeatherData selectedWeatherData = weatherDatalist.get(position);
+////            WeatherDetailsFragment weatherDetailsFragment = new WeatherDetailsFragment(selectedWeatherData);
+////            // Replace the current fragment with WeatherDetailsFragment
+////            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+////            fragmentTransaction.replace(R.id.detail_fragment, weatherDetailsFragment);
+////            fragmentTransaction.addToBackStack(null);
+////            fragmentTransaction.commit();
+////        }
+//
+//   /*     FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        WeatherDetailsFragment  itemFragment = WeatherData.newInstance(position); // You can pass any data to the fragment using newInstance() method
+//        fragmentTransaction.replace(R.id.fragment, itemFragment);
+//        fragmentTransaction.addToBackStack(null); // Optional: add to back stack to enable back navigation
+//        fragmentTransaction.commit();*/
+//
+//
+//        /*WeatherDetailsFragment newFragment = new WeatherDetailsFragment();
+//
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//
+//        transaction.addToBackStack(null);
+//        transaction.commit();
+//        transaction.replace(R.id.detail_fragment, newFragment);
+//        transaction.addToBackStack(null);
+//        transaction.commit();*/
+//
+//
+//
+//        // Check if double-clicked
+//     /*   if (SystemClock.elapsedRealtime() - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+//            if (position != RecyclerView.NO_POSITION && clickListener != null) {
+//                WeatherData selected = weatherDataList.get(position);
+//                itemClickListener.onItemClick(null, itemView, position, getItemId());
+//                clickListener.onItemClick(null, v, position, 0); // Pass null for parent and 0 for id
+//                weatherViewModel.selectedMessage.postValue(String.valueOf(selected));
+//            }
+//        }
+//        lastClickTime = SystemClock.elapsedRealtime();*/
+ //   }
 
    /* void bind(WeatherData weatherData) {
         // Bind data to the views in the ViewHolder

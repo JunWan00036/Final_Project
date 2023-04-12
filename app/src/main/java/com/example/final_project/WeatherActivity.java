@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 import com.example.final_project.databinding.ActivityWeatherBinding;
@@ -31,34 +32,201 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONObject;
-
+import com.example.final_project.databinding.ActivityWeatherBinding;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
-public class WeatherActivity extends AppCompatActivity implements WeatherDataListener {
-    /* @Override
-   public boolean onCreateOptionsMenu(Menu menu) {
+public class WeatherActivity extends AppCompatActivity  {
+    private int position = 0;
+    ActivityWeatherBinding  binding;
+    private Executor thread = Executors.newSingleThreadExecutor();
+    private RecyclerView.Adapter<WeatherDataViewHolder> myAdapter;
+    private WeatherDataDao  mDAO;
+    ArrayList<WeatherData> messages;
+    WeatherViewModel weatherViewModel;
+
+
+    ArrayList<WeatherDataDatabase> infos;
+    // Override onCreateOptionsMenu to inflate the menu layout
+    public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.my_menu, menu);
         return true;
     }
+    // Override onOptionsItemSelected to handle menu item clicks
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
-        switch( item.getItemId() ) {
-            case R.id.aboutID:
-                AlertDialog.Builder builder = new AlertDialog.Builder(WeatherActivity.this);
-                builder.setMessage("just input city name, click the search button").
-                        setTitle("How to use the WeatherStack?").
-                        setNegativeButton("ok", (dialog, cl) -> {
-                        }).create().show();
+        switch (item.getItemId()) {
+            case R.id.item_1:
+                if (messages.size() > 0) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WeatherActivity.this);
+                    builder
+                            //.setMessage("Do you want to Delete this message : " + tv_message.getText().toString()).
+                            .setTitle("Are you sure to delete the message?")
+                            .setNegativeButton("no", (dialog, cl) -> {
+                            })
+                            .setPositiveButton("yes", (dialog, cl) -> {
+                                WeatherData removedMessage = messages.get(position);
+                                thread.execute(() -> {
+                                    mDAO.delete(removedMessage);
+                                });
+                                runOnUiThread(() -> {
+                                    messages.remove(position);
+                                    myAdapter.notifyItemRemoved(position);
+                                });
+                                Snackbar.make(binding.getRoot(), "You deleted message #" , Snackbar.LENGTH_LONG)
+                                        .setAction("Undo", c -> {
+                                            thread.execute(() -> {
+                                                mDAO.insert(removedMessage);
+                                            });
+                                            runOnUiThread(() -> {
+                                                messages.add(position, removedMessage);
+                                                myAdapter.notifyItemInserted(position);
+                                            });
+                                        }).show();
+                                onBackPressed();
+                            }).create().show();
+                }
                 break;
+            case R.id.item_2:
+//                if (item != null) {
+//                    Toast.makeText(this, "message #" + tv_message.getText(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Version 1.0, created by Jun", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Version 1.0, created by Jun", Toast.LENGTH_LONG).show();
+
+                return true;
+//            break;
+
+//                }
+//                break;
+            default:
+                return false;
         }
         return true;
-    }*/
-    private EditText searchEditText;
+    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+binding.myrecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        setSupportActionBar(binding.toolbar);
+        weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
+        if (messages == null) {
+            weatherViewModel.weatherData.setValue(messages = new ArrayList<WeatherData>());
+            Executor thread = Executors.newSingleThreadExecutor();
+            WeatherDataDatabase db = Room.databaseBuilder(getApplicationContext(), WeatherDataDatabase.class, "database-name").build();
+            mDAO = db.weatherDataDao();
+            messages = weatherViewModel.weatherData.getValue();
+            setContentView(binding.getRoot());//You can then load the RecyclerView
+            thread.execute(() ->
+            {
+                messages.addAll(mDAO.getAllWeatherData()); //Once you get the data from database
+
+                runOnUiThread(() -> binding.myrecyclerview.setAdapter(myAdapter)); //You can then load the RecyclerView
+            });
+        }
+            weatherViewModel.selectedWeatherData.observe(this, (newValue) -> {
+                WeatherDetailsFragment chatFragment = new WeatherDetailsFragment(newValue);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, chatFragment).addToBackStack("").commit();
+
+
+
+
+                binding.myrecyclerview.setAdapter(myAdapter = new RecyclerView.Adapter<MyRowHolder>() {
+                    @NonNull
+                    @Override
+                    public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+                        //if(messages.get(messages.size()-1).isSentButton()){
+                        int ViewType;
+
+
+                            //always inflates receive_message.xml
+                        messages receiveMessagesBinding = ReceiveMessagesBinding.inflate(getLayoutInflater(),
+                                    parent, false);
+                            View root = receiveMessagesBinding.getRoot();
+                            return new MyRowHolder(root);
+
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class MyRowHolder extends RecyclerView.ViewHolder {
+
+    public TextView messageText;
+    public TextView timeText;
+
+
+
+
+    public MyRowHolder(@NonNull View itemView) { //itewView will be the root of the layout, here constraintLayout was chosen;
+        super(itemView);
+        itemView.setOnClickListener(clk -> {
+
+            int position = getAbsoluteAdapterPosition();
+            int selectedIndex = position;
+            WeatherDataDatabase selected = infos.get(position);
+            AlertDialog.Builder builder = new AlertDialog.Builder(WeatherActivity.this);
+            builder.setTitle(getString(R.string.weather_view_title) + " " + selected+ " " + selected );
+            builder.setMessage(new WeatherRoot(selected.getWeatherInfo()).toString());
+            builder.setPositiveButton(R.string.close_button, (dialog, cl)->{
+
+            });
+            //builder.setNegativeButton("No", (dialog, cl)->{});
+            builder.create().show();
+            ChatMessage selected = messages.get(position);
+               /* if (chatModel != null) {
+                    chatModel.selectedMessage.postValue(selected);
+                }*/
+            chatModel.selectedMessage.postValue(selected);
+
+
+
+
+
+
+        });
+        messageText = itemView.findViewById(R.id.message);
+        timeText = itemView.findViewById(R.id.time);
+
+    }
+
+
+
+
+}
+
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Handle screen rotation here
+        // You can get the new orientation from newConfig.orientation
+    }
+
+
+
+
+
+
+    //
+//    }
+    /*private EditText searchEditText;
     private TextView cityTextView;
     private WeatherViewModel weatherModel;
     private TextView temperatureTextView;
@@ -89,6 +257,70 @@ WeatherData weatherData;
         weatherRecyclerView.setAdapter(adapter);
 
 
+
+        binding = ActivityWeatherBinding.inflate(getLayoutInflater());
+        setSupportActionBar(binding.toolbar);
+        weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
+        if (messages == null) {
+            weatherViewModel.weatherData.setValue(messages = new ArrayList<WeatherData>());
+            Executor thread = Executors.newSingleThreadExecutor();
+            WeatherDataDatabase db = Room.databaseBuilder(getApplicationContext(), WeatherDataDatabase.class, "database-name").build();
+            mDAO = db.weatherDataDao();
+            messages = weatherViewModel.weatherData.getValue();
+            setContentView(binding.getRoot());//You can then load the RecyclerView
+            *//*loads buttons / text on screen *//*
+            thread.execute(() ->
+            {
+                // mDAO = db.cmDAO();
+                messages.addAll(mDAO.getAllWeatherData()); //Once you get the data from database
+
+                runOnUiThread(() -> binding.myRecyclerview.setAdapter(myAdapter));
+
+                *//*if(messages.size()-1>0) {
+                    binding.theRecycleView.smoothScrollToPosition(messages.size() - 1);
+                }*//*
+            });
+        }
+
+
+
+
+
+
+//*****************************************************************************************
+        *//*chatModel.selectedMessage.observe(this, (newMessageValue) -> {
+            Log.i("tag", "onCreate: "+newMessageValue.getMessage());
+            MessageDetailsFragment chatFragment = new MessageDetailsFragment(newMessageValue);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLocation ,chatFragment).addToBackStack("").commit();
+        });*//*
+
+        weatherViewModel.selectedWeatherData.observe(this, (newValue) -> {
+            WeatherDetailsFragment chatFragment = new WeatherDetailsFragment(newValue);
+            //chatFragment.getMessage(newValue);
+                    *//*getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragmentLocation, chatFragment)
+                            .commit();*//*
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, chatFragment).addToBackStack("").commit();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         WeatherViewModel weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
       weatherViewModel.selectedWeatherData.observe(this, (newMessageValue) -> {
 //            String weatherData = newMessageValue;
@@ -117,11 +349,11 @@ WeatherData weatherData;
 
         WeatherDetailsFragment weatherFragment = new WeatherDetailsFragment(weatherData);
         weatherModel = new ViewModelProvider(this).get(WeatherViewModel.class);
-      /*  weatherModel.selectedWeatherData.observe(this, (newWeatherItemValue) -> {
+      *//*  weatherModel.selectedWeatherData.observe(this, (newWeatherItemValue) -> {
             Log.i("tag", "onCreate: " + newWeatherItemValue.getName());
             weatherFragment = new WeatherDetailsFragment(newWeatherItemValue);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment, weatherFragment).addToBackStack("").commit();
-        });*/
+        });*//*
 
 
 
@@ -166,7 +398,7 @@ WeatherData weatherData;
                 weatherAPI.getWeatherDataForCity(cityName, (WeatherDataListener) WeatherActivity.this);
 
             }
-        });
+        });*/
        /* weatherRecyclerView.setAdapter(new WeatherDataAdapter());
         weatherRecyclerView.setAdapter(adapter);*/
 
@@ -174,19 +406,19 @@ WeatherData weatherData;
 
 
 
-    }
 
+/*
     @NonNull
     @Override
     public WeatherDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city_weather, parent, false);
         return new WeatherDataViewHolder(itemView);
-    }
+    }*/
 
 
 
 
-   // @SuppressLint("NotifyDataSetChanged")
+ /*  // @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onDataReceived(WeatherData weatherData) {
         weatherDataList.add(weatherData);
@@ -238,9 +470,26 @@ WeatherData weatherData;
 
 
 
-
+*/
 
 
 
 
 }
+
+ public MyRowHolder(@NonNull View itemView) { //itewView will be the root of the layout, here constraintLayout was chosen;
+                super(itemView);
+                itemView.setOnClickListener(clk -> {
+
+
+                    int position = getAbsoluteAdapterPosition();
+                    weatherViewModel selected = weatherData.get(position);
+
+                    weatherViewModel.selectedWeatherData.postValue(selected);
+
+                });
+                messageText = itemView.findViewById(R.id.cityName);
+                timeText = itemView.findViewById(R.id.temperatureView);
+
+            }
+        }

@@ -45,6 +45,7 @@ public class WeatherDetailsFragment extends Fragment {
         weatherTextView = binding.temperatureView;
         forecastTextView = binding.weatherConditionTextView;
 
+        cityTextView.setText("jest gor dsdd");
         // Set data to UI elements based on selected item from RecyclerView
         if (selected != null) {
             cityTextView.setText(selected.getCityName());
@@ -54,6 +55,11 @@ public class WeatherDetailsFragment extends Fragment {
         }
 
         return binding.getRoot();
+
+
+
+
+
 
     }
 }

@@ -17,6 +17,7 @@
     <string name="sendMess">消息</string>
     <string name="Database">数据库</string>
 
+    <string name="weather_view_title">天气</string>
     <string name="saved_weather">保存</string>
     <string name="weather_now">当前温度</string>
     <string name="weatherstack">天气</string>

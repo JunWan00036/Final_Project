@@ -16,6 +16,7 @@
     <string name="hello">hello</string>
     <string name="sendMess">send receive goes here</string>
     <string name="Database">Database id goes here</string>
+    <string name="weather_view_title">Weather </string>
 
 
 </resources>

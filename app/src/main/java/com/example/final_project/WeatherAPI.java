@@ -28,37 +28,6 @@ public class WeatherAPI {
     private SharedPreferences sharedPreferences;
 
     String iconUrl;
-   /* private Gson gson;
-Context context;
-    public WeatherAPI() {
-        requestQueue = Volley.newRequestQueue(context);
-        gson = new GsonBuilder().create();
-    }
-
-    public void getWeatherByCity(String city, final WeatherCallback callback) {
-        String url = BASE_URL + city;
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        WeatherResponse weatherResponse = gson.fromJson(response, WeatherResponse.class);
-                        callback.onSuccess(weatherResponse);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                callback.onError(error.getMessage());
-            }
-        });
-
-        requestQueue.add(stringRequest);
-    }
-
-    public interface WeatherCallback {
-        void onSuccess(WeatherResponse response);
-        void onError(String message);
-    }*/
 
 
 
