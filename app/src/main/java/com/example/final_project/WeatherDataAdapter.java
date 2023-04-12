@@ -29,6 +29,7 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
         this.itemClickListener = itemClickListener;
     }
     private List<WeatherData> weatherDataList = new ArrayList<>();
+
     private AdapterView.OnItemClickListener itemClickListener; // Declare itemClickListener
   @NonNull
     @Override

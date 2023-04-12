@@ -10,5 +10,10 @@ public class WeatherViewModel extends ViewModel {
 
 
     public MutableLiveData<ArrayList<WeatherData>> weatherData = new MutableLiveData< >();
-    public MutableLiveData<WeatherData> selectedWeatherData = new MutableLiveData< >();
+  public MutableLiveData<WeatherData> selectedWeatherData = new MutableLiveData< >();
+    public  MutableLiveData<String> selectedMessage = new MutableLiveData<>();
+    /*public void setSelectedMessage(String message) {
+        selectedMessage.setValue(message);
+    }*/
+
 }

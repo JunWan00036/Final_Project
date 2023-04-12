@@ -136,7 +136,7 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
     public void onClick(View v) {
         // Get clicked item position
         int position = getAbsoluteAdapterPosition();
-        WeatherDetailsFragment newFragment = new WeatherDetailsFragment();
+        /*WeatherDetailsFragment newFragment = new WeatherDetailsFragment();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
@@ -144,14 +144,23 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
         transaction.commit();
         transaction.replace(R.id.detail_fragment, newFragment);
         transaction.addToBackStack(null);
-        transaction.commit();
+        transaction.commit();*/
+     /*   WeatherData selectedWeatherData = weatherDataList.get(position);
+        WeatherDetailsFragment weatherDetailsFragment = new WeatherDetailsFragment(selectedWeatherData);
+        // Replace the current fragment with WeatherDetailsFragment
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.detail_fragment, weatherDetailsFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();*/
+
+
         // Check if double-clicked
         if (SystemClock.elapsedRealtime() - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
             if (position != RecyclerView.NO_POSITION && clickListener != null) {
                 WeatherData selected = weatherDataList.get(position);
                 itemClickListener.onItemClick(null, itemView, position, getItemId());
                 clickListener.onItemClick(null, v, position, 0); // Pass null for parent and 0 for id
-                weatherViewModel.selectedWeatherData.postValue(selected);
+                weatherViewModel.selectedMessage.postValue(String.valueOf(selected));
             }
         }
         lastClickTime = SystemClock.elapsedRealtime();

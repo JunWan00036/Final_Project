@@ -14,15 +14,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.final_project.databinding.ActivityWeatherBinding;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 
 public class WeatherActivity extends AppCompatActivity implements WeatherDataListener {
     private EditText searchEditText;
@@ -34,7 +40,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherDataLis
     private WeatherAPI weatherAPI;
     private TextView searchResultsTextView;
     private RecyclerView weatherRecyclerView;
-
+WeatherViewModel weatherViewModel;
     private List<WeatherData> weatherDataList = new ArrayList<>();
     private ActivityWeatherBinding binding;
     @Override
@@ -46,6 +52,73 @@ public class WeatherActivity extends AppCompatActivity implements WeatherDataLis
         weatherRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         weatherRecyclerView.setAdapter(adapter);
+
+        WeatherViewModel weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
+      weatherViewModel.selectedWeatherData.observe(this, (newMessageValue) -> {
+//            String weatherData = newMessageValue;
+            WeatherDetailsFragment chatFragment = new WeatherDetailsFragment(newMessageValue);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment, chatFragment)
+                    .addToBackStack("")
+                    .commit();
+                }
+        );
+
+
+      /*  public void setSelectedWeatherData(WeatherData weatherData)
+        {
+            selectedWeatherData.setValue(weatherData);
+        }*/
+
+  /*      weatherViewModel.selectedMessage.observe(this, (newMessageValue) -> {
+            // Assuming newMessageValue is a JSON string representing WeatherData
+            try {
+                // Deserialize the JSON string into a WeatherData object
+                Gson gson = new Gson();
+                WeatherData weatherData = gson.fromJson(newMessageValue, WeatherData.class);
+
+                // Pass the WeatherData object to the WeatherDetailsFragment constructor
+                WeatherDetailsFragment chatFragment = new WeatherDetailsFragment(weatherData);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.detail_fragment, chatFragment)
+                        .addToBackStack("")
+                        .commit();
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
+        });*/
+
+
+
+
+
+    /*    weatherViewModel.selectedMessage.observe(this, (newMessageValue) -> {
+            // Assuming newMessageValue is a JSON string representing WeatherData
+            try {
+                // Parse the JSON string into a WeatherData object
+                WeatherData weatherData = new WeatherData();
+                JSONObject jsonObject = new JSONObject(newMessageValue);
+                // Extract and set the necessary data from the JSON object
+                weatherData.setTemperature(jsonObject.getDouble("temperature"));
+//                weatherData.setHumidity(jsonObject.getDouble("humidity"));
+                // Set other properties as needed
+                // ...
+
+                // Pass the WeatherData object to the WeatherDetailsFragment constructor
+                WeatherDetailsFragment chatFragment = new WeatherDetailsFragment(weatherData);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.detail_fragment, chatFragment)
+                        .addToBackStack("")
+                        .commit();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });*/
+
+                adapter.notifyDataSetChanged(); // Notify the adapter that data has changed
         weatherIconImageView = findViewById(R.id.weatherIconImageView);
         searchEditText = findViewById(R.id.search_edit_text);
         cityTextView = findViewById(R.id.city_text_view);
@@ -149,7 +222,10 @@ public class WeatherActivity extends AppCompatActivity implements WeatherDataLis
     }
 
 
-
+    private void getWeatherDataFromApi(String cityName) {
+        WeatherAPI weatherAPI = new WeatherAPI(this); // assuming "this" refers to the context of WeatherActivity
+        weatherAPI.getWeatherDataForCity(cityName, this);
+    }
 
         // ...
 

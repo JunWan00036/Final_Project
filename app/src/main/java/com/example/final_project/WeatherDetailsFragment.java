@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.final_project.WeatherData;
 import com.example.final_project.databinding.FragmentLayoutBinding;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class WeatherDetailsFragment extends Fragment {
@@ -30,8 +31,8 @@ public class WeatherDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
       super.onCreateView(inflater, container, savedInstanceState);
-/*
-        FragmentLayoutBinding binding=FragmentLayoutBinding.inflate(inflater);
+ArrayList<WeatherData> weatherDataList = new ArrayList<>();
+    /*    FragmentLayoutBinding binding=FragmentLayoutBinding.inflate(inflater);
 
 
 /*binding.cityTextView.setText(selected.getCityName());
