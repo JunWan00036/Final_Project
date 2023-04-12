@@ -1,5 +1,6 @@
 package com.example.final_project;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -13,12 +14,17 @@ public class WeatherData {
         this.id = id;
     }
 
-    @PrimaryKey(autoGenerate = true)
 
+    @ColumnInfo(name = "id")
+    @PrimaryKey(autoGenerate=true)
     private int id;
+    @ColumnInfo(name="name")
     private String cityName;
+    @ColumnInfo(name="temperature")
     private double temperature;
+    @ColumnInfo(name="icon")
     private String weatherCondition;
+    @ColumnInfo(name="description")
     private String weatherIconUrl;
 
 

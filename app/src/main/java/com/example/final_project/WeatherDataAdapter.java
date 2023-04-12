@@ -1,7 +1,6 @@
 package com.example.final_project;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,6 @@ import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -27,13 +23,17 @@ import java.util.List;
 import java.util.Locale;
 
 public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHolder> {
-
-
+    private Context context;
+    private List<WeatherData> weatherDataList ;
+    public WeatherDataAdapter( List<WeatherData> weatherDataList)  { // Replace String with your data model type
+//        this.context = context;
+        this.weatherDataList = this.weatherDataList;
+    }
 
     public void setItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
-    private List<WeatherData> weatherDataList = new ArrayList<>();
+//    private List<WeatherData> weatherDataList = new ArrayList<>();
 
     private AdapterView.OnItemClickListener itemClickListener; // Declare itemClickListener
   @NonNull
@@ -45,6 +45,7 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // Handle item click event here
+
             }
         });
         return new WeatherDataViewHolder(itemView);
@@ -103,6 +104,9 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
 
     @Override
     public int getItemCount() {
+        if (weatherDataList == null) {
+            return 0;
+        }
         return weatherDataList.size();
     }
 
@@ -111,6 +115,9 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
         notifyDataSetChanged();
     }
     public void updateData(List<WeatherData> newData) {
+        if (weatherDataList == null) {
+            weatherDataList = new ArrayList<>();
+        }
         weatherDataList.clear();
         weatherDataList.addAll(newData);
         notifyDataSetChanged(); // Call notifyDataSetChanged() after updating the data

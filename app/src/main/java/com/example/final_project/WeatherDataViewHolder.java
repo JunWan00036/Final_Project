@@ -158,7 +158,22 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
         if (weatherDatalist != null && !weatherDatalist.isEmpty() && position >= 0 && position < weatherDatalist.size()) {
             WeatherData selected = weatherDatalist.get(position);
             weatherViewModel.selectedWeatherData.postValue(selected);
+            WeatherData selectedWeatherData = weatherDatalist.get(position);
+            WeatherDetailsFragment weatherDetailsFragment = new WeatherDetailsFragment(selectedWeatherData);
+            // Replace the current fragment with WeatherDetailsFragment
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.detail_fragment, weatherDetailsFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
+
+   /*     FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        WeatherDetailsFragment  itemFragment = WeatherData.newInstance(position); // You can pass any data to the fragment using newInstance() method
+        fragmentTransaction.replace(R.id.fragment, itemFragment);
+        fragmentTransaction.addToBackStack(null); // Optional: add to back stack to enable back navigation
+        fragmentTransaction.commit();*/
+
 
         /*WeatherDetailsFragment newFragment = new WeatherDetailsFragment();
 
@@ -169,13 +184,7 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
         transaction.replace(R.id.detail_fragment, newFragment);
         transaction.addToBackStack(null);
         transaction.commit();*/
-     /*   WeatherData selectedWeatherData = weatherDataList.get(position);
-        WeatherDetailsFragment weatherDetailsFragment = new WeatherDetailsFragment(selectedWeatherData);
-        // Replace the current fragment with WeatherDetailsFragment
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.detail_fragment, weatherDetailsFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();*/
+
 
 
         // Check if double-clicked

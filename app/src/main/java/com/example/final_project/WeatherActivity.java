@@ -1,9 +1,12 @@
 package com.example.final_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -22,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.final_project.databinding.ActivityWeatherBinding;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -33,6 +38,26 @@ import java.util.Locale;
 
 
 public class WeatherActivity extends AppCompatActivity implements WeatherDataListener {
+    /* @Override
+   public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch( item.getItemId() ) {
+            case R.id.aboutID:
+                AlertDialog.Builder builder = new AlertDialog.Builder(WeatherActivity.this);
+                builder.setMessage("just input city name, click the search button").
+                        setTitle("How to use the WeatherStack?").
+                        setNegativeButton("ok", (dialog, cl) -> {
+                        }).create().show();
+                break;
+        }
+        return true;
+    }*/
     private EditText searchEditText;
     private TextView cityTextView;
     private WeatherViewModel weatherModel;
@@ -52,11 +77,17 @@ WeatherData weatherData;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-        WeatherDataAdapter adapter = new WeatherDataAdapter();
+//        setSupportActionBar(binding.toolbar);
+        WeatherDataAdapter adapter = new WeatherDataAdapter(weatherDataList);
+//        adapter.setWeatherDataList(weatherDataList);
+// or
+//        adapter.updateData(weatherDataList);
+//        adapter.notifyDataSetChanged();
         weatherRecyclerView = findViewById(R.id.my_recyclerview);
         weatherRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         weatherRecyclerView.setAdapter(adapter);
+
 
         WeatherViewModel weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
       weatherViewModel.selectedWeatherData.observe(this, (newMessageValue) -> {
@@ -80,6 +111,7 @@ WeatherData weatherData;
         temperatureTextView = findViewById(R.id.temperature_text_view);
         weatherConditionTextView = findViewById(R.id.weather_condition_text_view);
         searchResultsTextView = findViewById(R.id.search_results_text_view);
+
 
 
 
@@ -191,6 +223,20 @@ WeatherData weatherData;
     }
 
         // ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
