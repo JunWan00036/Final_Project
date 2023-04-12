@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +27,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHolder> {
+
+
+
     public void setItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
@@ -49,6 +54,7 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
     @Override
     public void onBindViewHolder(@NonNull WeatherDataViewHolder holder, int position) {
         WeatherData weatherData = weatherDataList.get(position);
+
         if (holder.cityTextView != null) {
             holder.cityTextView.setText(weatherData.getCityName());
         }
@@ -79,7 +85,19 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
                     })
                     .into(holder.weatherIconImageView);
         }
-
+/*
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WeatherDetailsFragment miscellaneousfragment = new WeatherDetailsFragment();
+                FragmentManager fragmentManager =currentfragment.getFragmentManager();
+                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.fragment, miscellaneousfragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+*/
 
     }
 

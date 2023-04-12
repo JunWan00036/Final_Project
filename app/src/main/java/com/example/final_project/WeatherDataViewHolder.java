@@ -68,6 +68,8 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
 */
 
 
+
+
 package com.example.final_project;
 
 import android.os.SystemClock;
@@ -87,6 +89,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +101,9 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
     public TextView weatherConditionTextView;
     public ImageView weatherIconImageView;
     WeatherViewModel weatherViewModel;
-    List<WeatherData> weatherDataList = new ArrayList<>();
+    WeatherData weatherData;
+    List<WeatherData> weatherDatalist = new ArrayList<>();
+//    ArrayList<WeatherData> weatherDataList = new ArrayList<>();
     // Set click listener for RecyclerView items
     private AdapterView.OnItemClickListener itemClickListener;
     private static final long DOUBLE_CLICK_TIME_DELTA = 300; // Define double-click time interval
@@ -132,10 +138,28 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
         weatherIconImageView = itemView.findViewById(R.id.weatherIconImageView);
     }
 
+
+
+
+
+
+
+
     @Override
     public void onClick(View v) {
         // Get clicked item position
         int position = getAbsoluteAdapterPosition();
+        //weatherDatalist.add(weatherData);
+       /* if (weatherDatalist != null && weatherDatalist.size() > 0) {
+//            WeatherData weatherData = weatherDatalist.get(position); // Get the WeatherData object at the specified index
+            WeatherData selected = weatherDatalist.get(position);
+            weatherViewModel.selectedWeatherData.postValue(selected);
+        }*/
+        if (weatherDatalist != null && !weatherDatalist.isEmpty() && position >= 0 && position < weatherDatalist.size()) {
+            WeatherData selected = weatherDatalist.get(position);
+            weatherViewModel.selectedWeatherData.postValue(selected);
+        }
+
         /*WeatherDetailsFragment newFragment = new WeatherDetailsFragment();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -155,7 +179,7 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
 
 
         // Check if double-clicked
-        if (SystemClock.elapsedRealtime() - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+     /*   if (SystemClock.elapsedRealtime() - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
             if (position != RecyclerView.NO_POSITION && clickListener != null) {
                 WeatherData selected = weatherDataList.get(position);
                 itemClickListener.onItemClick(null, itemView, position, getItemId());
@@ -163,7 +187,7 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
                 weatherViewModel.selectedMessage.postValue(String.valueOf(selected));
             }
         }
-        lastClickTime = SystemClock.elapsedRealtime();
+        lastClickTime = SystemClock.elapsedRealtime();*/
     }
 
    /* void bind(WeatherData weatherData) {

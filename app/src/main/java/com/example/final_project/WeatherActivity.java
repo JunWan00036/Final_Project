@@ -1,6 +1,7 @@
 package com.example.final_project;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,14 +35,17 @@ import java.util.Locale;
 public class WeatherActivity extends AppCompatActivity implements WeatherDataListener {
     private EditText searchEditText;
     private TextView cityTextView;
-
+    private WeatherViewModel weatherModel;
     private TextView temperatureTextView;
     private TextView weatherConditionTextView;
     private ImageView weatherIconImageView;
     private WeatherAPI weatherAPI;
     private TextView searchResultsTextView;
+
+    private WeatherDetailsFragment weatherFragment;
     private RecyclerView weatherRecyclerView;
 WeatherViewModel weatherViewModel;
+WeatherData weatherData;
     private List<WeatherData> weatherDataList = new ArrayList<>();
     private ActivityWeatherBinding binding;
     @Override
@@ -66,57 +71,7 @@ WeatherViewModel weatherViewModel;
         );
 
 
-      /*  public void setSelectedWeatherData(WeatherData weatherData)
-        {
-            selectedWeatherData.setValue(weatherData);
-        }*/
 
-  /*      weatherViewModel.selectedMessage.observe(this, (newMessageValue) -> {
-            // Assuming newMessageValue is a JSON string representing WeatherData
-            try {
-                // Deserialize the JSON string into a WeatherData object
-                Gson gson = new Gson();
-                WeatherData weatherData = gson.fromJson(newMessageValue, WeatherData.class);
-
-                // Pass the WeatherData object to the WeatherDetailsFragment constructor
-                WeatherDetailsFragment chatFragment = new WeatherDetailsFragment(weatherData);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.detail_fragment, chatFragment)
-                        .addToBackStack("")
-                        .commit();
-            } catch (JsonSyntaxException e) {
-                e.printStackTrace();
-            }
-        });*/
-
-
-
-
-
-    /*    weatherViewModel.selectedMessage.observe(this, (newMessageValue) -> {
-            // Assuming newMessageValue is a JSON string representing WeatherData
-            try {
-                // Parse the JSON string into a WeatherData object
-                WeatherData weatherData = new WeatherData();
-                JSONObject jsonObject = new JSONObject(newMessageValue);
-                // Extract and set the necessary data from the JSON object
-                weatherData.setTemperature(jsonObject.getDouble("temperature"));
-//                weatherData.setHumidity(jsonObject.getDouble("humidity"));
-                // Set other properties as needed
-                // ...
-
-                // Pass the WeatherData object to the WeatherDetailsFragment constructor
-                WeatherDetailsFragment chatFragment = new WeatherDetailsFragment(weatherData);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.detail_fragment, chatFragment)
-                        .addToBackStack("")
-                        .commit();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        });*/
 
                 adapter.notifyDataSetChanged(); // Notify the adapter that data has changed
         weatherIconImageView = findViewById(R.id.weatherIconImageView);
@@ -127,6 +82,14 @@ WeatherViewModel weatherViewModel;
         searchResultsTextView = findViewById(R.id.search_results_text_view);
 
 
+
+        WeatherDetailsFragment weatherFragment = new WeatherDetailsFragment(weatherData);
+        weatherModel = new ViewModelProvider(this).get(WeatherViewModel.class);
+      /*  weatherModel.selectedWeatherData.observe(this, (newWeatherItemValue) -> {
+            Log.i("tag", "onCreate: " + newWeatherItemValue.getName());
+            weatherFragment = new WeatherDetailsFragment(newWeatherItemValue);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, weatherFragment).addToBackStack("").commit();
+        });*/
 
 
 

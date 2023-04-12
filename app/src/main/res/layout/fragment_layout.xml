@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/detail_fragment"
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,32 +9,33 @@
     android:background="@color/black">
 
     <TextView
-        android:id="@+id/city_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/cityName"
+        android:layout_width="163dp"
+        android:layout_height="424dp"
+        android:layout_marginBottom="16dp"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/temperature_text_view"
+        app:layout_constraintBottom_toTopOf="@+id/temperatureView"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/temperature_text_view"
+        android:id="@+id/temperatureView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/weather_condition_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/city_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/cityName"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <TextView
-        android:id="@+id/weather_condition_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/weatherConditionTextView"
+        android:layout_width="414dp"
+        android:layout_height="0dp"
 
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/temperature_text_view" />
+        app:layout_constraintTop_toBottomOf="@+id/temperatureView" />
 
     <ImageView
         android:id="@+id/weatherIconImageView"

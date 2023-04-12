@@ -21,57 +21,39 @@ public class WeatherDetailsFragment extends Fragment {
     public TextView weatherTextView;
     public ImageView weatherIconImageView;
     WeatherData selected;
+    public WeatherDetailsFragment() {
 
+
+    }
     public WeatherDetailsFragment(WeatherData m) {
 
         selected = m;
 
     }
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-      super.onCreateView(inflater, container, savedInstanceState);
-ArrayList<WeatherData> weatherDataList = new ArrayList<>();
-    /*    FragmentLayoutBinding binding=FragmentLayoutBinding.inflate(inflater);
+        super.onCreateView(inflater, container, savedInstanceState);
+        FragmentLayoutBinding binding;
+        binding = FragmentLayoutBinding.inflate(inflater, container, false);
 
-
-/*binding.cityTextView.setText(selected.getCityName());
-        binding.weatherTextView.setText(String.format(Locale.getDefault(), "%.1f °C", selected.getTemperature()));
-        binding.weatherConditionTextView.setText(selected.getWeatherCondition());*//*
-
-        //binding.weatherIconImageView.setImageIcon(selected.getWeatherIconUrl());
-
-//        return binding.getRoot();
-*/
-        // View view = inflater.inflate(R.layout.item_city_weather, container, false); // Replace with your fragment layout
-
-        FragmentLayoutBinding binding= FragmentLayoutBinding.inflate(inflater);
-        View view = binding.getRoot();
-        // Get references to UI elements
-//        weatherIconImageView = view.findViewById(R.id.weatherIconImageView);
-//        cityTextView = view.findViewById(R.id.cityTextView);
-//        weatherTextView = view.findViewById(R.id.weatherTextView);
-//        forecastTextView = view.findViewById(R.id.weatherConditionTextView);
-        binding.cityTextView.setText(selected.getCityName());
-        binding.temperatureTextView.setText(String.format(Locale.getDefault(), "%.1f °C", selected.getTemperature()));
-        binding.weatherConditionTextView.setText(selected.getWeatherCondition());
-        //return view;
-        return binding.getRoot();
-        //binding.weatherIconImageView.setImageIcon(selected.getWeatherIconUrl());
-
+        ArrayList<WeatherData> weatherDataList = new ArrayList<>();
+        // Get references to UI elements using the binding object
+        weatherIconImageView = binding.weatherIconImageView;
+        cityTextView = binding.cityName;
+        weatherTextView = binding.temperatureView;
+        forecastTextView = binding.weatherConditionTextView;
 
         // Set data to UI elements based on selected item from RecyclerView
-//        WeatherData cityWeatherData = getSelectedCityWeatherData(); // Replace with your logic to get selected item from RecyclerView
-//        if (cityWeatherData != null) {
-//            cityTextView.setText(cityWeatherData.getCityName());
-//            weatherTextView.setText(String.format(Locale.getDefault(), "%.1f °C", cityWeatherData.getTemperature()));
-//            forecastTextView.setText(cityWeatherData.getWeatherCondition());
-        // weatherIconImageView.setImageIcon(cityWeatherData.getWeatherIconUrl());
+        if (selected != null) {
+            cityTextView.setText(selected.getCityName());
+            weatherTextView.setText(String.format(Locale.getDefault(), "%.1f °C", selected.getTemperature()));
+            forecastTextView.setText(selected.getWeatherCondition());
+            // Set weather icon using selected.getWeatherIconUrl()
+        }
+
+        return binding.getRoot();
+
     }
-
-    // return view;
-
-
-
-
 }
