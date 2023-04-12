@@ -29,9 +29,9 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/weatherConditionTextView"
-        android:layout_width="261dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/temperatureview"
+        android:layout_width="wrap_content"
+        android:layout_height="84dp"
         android:text="@string/Database"
         android:textSize="18sp" />
 

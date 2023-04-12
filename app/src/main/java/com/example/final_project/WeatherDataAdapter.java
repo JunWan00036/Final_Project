@@ -78,6 +78,8 @@ public class WeatherDataAdapter extends RecyclerView.Adapter<WeatherDataViewHold
                     })
                     .into(holder.weatherIconImageView);
         }
+
+
     }
 
     @Override

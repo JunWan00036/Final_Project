@@ -28,9 +28,9 @@ public class WeatherDetailsFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-/*
-//        super.onCreateView(inflater, container, savedInstanceState);
 
+      super.onCreateView(inflater, container, savedInstanceState);
+/*
         FragmentLayoutBinding binding=FragmentLayoutBinding.inflate(inflater);
 
 
@@ -54,8 +54,8 @@ public class WeatherDetailsFragment extends Fragment {
         binding.cityTextView.setText(selected.getCityName());
         binding.temperatureTextView.setText(String.format(Locale.getDefault(), "%.1f °C", selected.getTemperature()));
         binding.weatherConditionTextView.setText(selected.getWeatherCondition());
-        return view;
-
+        //return view;
+        return binding.getRoot();
         //binding.weatherIconImageView.setImageIcon(selected.getWeatherIconUrl());
 
 

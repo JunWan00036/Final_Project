@@ -79,6 +79,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
@@ -105,9 +107,11 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city_weather, parent, false);
         return new WeatherDataViewHolder(itemView); // Pass clickListener to the constructor
     }*/
-
+  private FragmentManager fragmentManager;
     public WeatherDataViewHolder(@NonNull View itemView) {
+
         super(itemView);
+        this.fragmentManager = fragmentManager;
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,9 +126,9 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
         });
 
         itemView.setOnClickListener(this);
-        cityTextView = itemView.findViewById(R.id.city_text_view);
-        temperatureTextView = itemView.findViewById(R.id.temperature_text_view);
-        weatherConditionTextView = itemView.findViewById(R.id.weather_condition_text_view);
+        cityTextView = itemView.findViewById(R.id.cityTextView);
+        temperatureTextView = itemView.findViewById(R.id.temperatureview);
+        weatherConditionTextView = itemView.findViewById(R.id.weatherTextView);
         weatherIconImageView = itemView.findViewById(R.id.weatherIconImageView);
     }
 
@@ -132,7 +136,15 @@ public class WeatherDataViewHolder extends RecyclerView.ViewHolder implements Vi
     public void onClick(View v) {
         // Get clicked item position
         int position = getAbsoluteAdapterPosition();
+        WeatherDetailsFragment newFragment = new WeatherDetailsFragment();
 
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.addToBackStack(null);
+        transaction.commit();
+        transaction.replace(R.id.detail_fragment, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
         // Check if double-clicked
         if (SystemClock.elapsedRealtime() - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
             if (position != RecyclerView.NO_POSITION && clickListener != null) {

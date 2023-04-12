@@ -1,13 +1,11 @@
 package com.example.final_project;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -109,8 +107,9 @@ public class WeatherActivity extends AppCompatActivity implements WeatherDataLis
 
 
     }
-    @NonNull
 
+    @NonNull
+    @Override
     public WeatherDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city_weather, parent, false);
         return new WeatherDataViewHolder(itemView);
@@ -119,7 +118,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherDataLis
 
 
 
-    @SuppressLint("NotifyDataSetChanged")
+   // @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onDataReceived(WeatherData weatherData) {
         weatherDataList.add(weatherData);
